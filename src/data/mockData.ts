@@ -1,0 +1,821 @@
+import {
+  WalletProfileData,
+  TransactionItem,
+  AlertItem,
+  CaseReport,
+  CaseManagementItem,
+  AIMessage
+} from '../types';
+
+export const MOCK_CASE_MANAGEMENT_DATA: CaseManagementItem[] = [
+  {
+    id: 'CJ-2026-014',
+    caseNumber: 'CJ-2026-014',
+    title: 'Suspected Crypto Fraud Investigation',
+    targetAddress: '0x82A7656EC7ab88b098defB751B7401B5f6d8976F',
+    network: 'Ethereum',
+    riskLevel: 'high',
+    priority: 'High',
+    status: 'ACTIVE',
+    alertsCount: 12,
+    transactionsAnalyzed: 1284,
+    connectedAddressesCount: 107,
+    riskScore: 87,
+    graphDepthHops: 6,
+    firstActivityDate: '12 Aug 2026',
+    lastActivityDate: '26 Aug 2026',
+    createdDate: '26 Aug 2026',
+    leadInvestigator: 'Alex Vance (Cyber Crime Unit)',
+    notes: 'Rapid fund redistribution across 4 intermediate hop nodes following suspicious contract call.',
+    riskIndicators: [
+      'Rapid Fund Movement',
+      'Fan-Out Pattern',
+      'Multi-Hop Transfers',
+      'High Transaction Velocity'
+    ]
+  },
+  {
+    id: 'CJ-2026-013',
+    caseNumber: 'CJ-2026-013',
+    title: 'Lazarus Sub-Node Exploitation Audit',
+    targetAddress: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F',
+    network: 'Ethereum',
+    riskLevel: 'critical',
+    priority: 'Critical',
+    status: 'ACTIVE',
+    alertsCount: 19,
+    transactionsAnalyzed: 3412,
+    connectedAddressesCount: 245,
+    riskScore: 98,
+    graphDepthHops: 8,
+    firstActivityDate: '01 Aug 2026',
+    lastActivityDate: '25 Aug 2026',
+    createdDate: '20 Aug 2026',
+    leadInvestigator: 'Sarah Jenkins',
+    notes: 'Direct Tornado Cash anonymization interactivity and OFAC SDN watchlist match.',
+    riskIndicators: [
+      'OFAC SDN Watchlist Match',
+      'Mixer Anonymization',
+      'Circular Fund Movement',
+      'Multi-Hop Transfers'
+    ]
+  },
+  {
+    id: 'CJ-2026-012',
+    caseNumber: 'CJ-2026-012',
+    title: 'Cross-Chain Bridge Fund Tracing',
+    targetAddress: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
+    network: 'Bitcoin',
+    riskLevel: 'critical',
+    priority: 'High',
+    status: 'UNDER REVIEW',
+    alertsCount: 8,
+    transactionsAnalyzed: 8940,
+    connectedAddressesCount: 310,
+    riskScore: 94,
+    graphDepthHops: 5,
+    firstActivityDate: '15 Jul 2026',
+    lastActivityDate: '24 Aug 2026',
+    createdDate: '18 Aug 2026',
+    leadInvestigator: 'Cyber Forensics Division',
+    notes: 'Cross-chain hop exit node associated with darknet market liquidity pool.',
+    riskIndicators: [
+      'High-Risk Endpoint',
+      'Rapid Fund Movement',
+      'Peel Chain Structuring'
+    ]
+  },
+  {
+    id: 'CJ-2026-011',
+    caseNumber: 'CJ-2026-011',
+    title: 'Intermediate Hop Peeling Chain Analysis',
+    targetAddress: '0x3F9A1278c771A90B23fE12938171092817362B1',
+    network: 'Ethereum',
+    riskLevel: 'high',
+    priority: 'Medium',
+    status: 'UNDER REVIEW',
+    alertsCount: 5,
+    transactionsAnalyzed: 412,
+    connectedAddressesCount: 38,
+    riskScore: 78,
+    graphDepthHops: 4,
+    firstActivityDate: '10 Aug 2026',
+    lastActivityDate: '22 Aug 2026',
+    createdDate: '15 Aug 2026',
+    leadInvestigator: 'Alex Vance',
+    notes: 'Micro-splitting address attempting VASP off-ramp cashout.',
+    riskIndicators: [
+      'Peel-Chain Intermediate Hop',
+      'High Transaction Velocity'
+    ]
+  },
+  {
+    id: 'CJ-2026-010',
+    caseNumber: 'CJ-2026-010',
+    title: 'Regulated Exchange Off-Ramp Audit',
+    targetAddress: '0x9A48F921B7d3129841C520938C21094E19491C2',
+    network: 'Ethereum',
+    riskLevel: 'low',
+    priority: 'Low',
+    status: 'CLOSED',
+    alertsCount: 0,
+    transactionsAnalyzed: 980000,
+    connectedAddressesCount: 120000,
+    riskScore: 24,
+    graphDepthHops: 2,
+    firstActivityDate: '01 Jan 2021',
+    lastActivityDate: '26 Aug 2026',
+    createdDate: '05 Aug 2026',
+    leadInvestigator: 'Compliance Audit Team',
+    notes: 'Verified KYC/AML exchange hot wallet.',
+    riskIndicators: [
+      'Regulated VASP Off-Ramp'
+    ]
+  },
+  {
+    id: 'CJ-2026-009',
+    caseNumber: 'CJ-2026-009',
+    title: 'DeFi Flash Loan Vulnerability Review',
+    targetAddress: '0x47ac0fb3F2D84898e4D9E7b4DaB3C24507a6D503',
+    network: 'Polygon',
+    riskLevel: 'medium',
+    priority: 'Medium',
+    status: 'CLOSED',
+    alertsCount: 3,
+    transactionsAnalyzed: 2150,
+    connectedAddressesCount: 89,
+    riskScore: 48,
+    graphDepthHops: 3,
+    firstActivityDate: '20 Jun 2026',
+    lastActivityDate: '15 Aug 2026',
+    createdDate: '01 Aug 2026',
+    leadInvestigator: 'Sarah Jenkins',
+    notes: 'Flash loan liquidity pool interaction resolved.',
+    riskIndicators: [
+      'High Transaction Velocity',
+      'Smart Contract Interaction'
+    ]
+  }
+];
+
+export const MOCK_WALLETS: Record<string, WalletProfileData> = {
+  '0x82A7656EC7ab88b098defB751B7401B5f6d8976F': {
+    address: '0x82A7656EC7ab88b098defB751B7401B5f6d8976F',
+    chain: 'ETH',
+    entityName: 'Suspected Exploit Sub-Node',
+    category: 'High-Risk Cluster',
+    riskScore: 87,
+    riskLevel: 'high',
+    firstSeen: '2026-01-14 08:22:15 UTC',
+    lastActive: '2026-08-21 11:45:00 UTC',
+    totalReceivedUSD: 248420,
+    totalSentUSD: 239120,
+    currentBalanceUSD: 9300,
+    transactionCount: 1284,
+    connectedWalletsCount: 87,
+    balances: [
+      { symbol: 'ETH', amount: 2.85, valueUSD: 7410 },
+      { symbol: 'USDT', amount: 1890, valueUSD: 1890 }
+    ],
+    flags: [
+      'Rapid Fund Movement Across 4 Hop Nodes',
+      'Tornado Cash Anonymization Protocol Exposure',
+      'Peel-Chain Structuring Pattern Detected',
+      'Co-location with High-Risk Connection'
+    ],
+    riskIndicators: [
+      {
+        id: 'ind-1',
+        name: 'Rapid Fund Movement',
+        severity: 'high',
+        description: 'Transferred 82% of received value within 12 minutes of arrival.',
+        detectedStatus: 'Detected',
+        evidenceCount: 14
+      },
+      {
+        id: 'ind-2',
+        name: 'High Transaction Velocity',
+        severity: 'medium',
+        description: 'Averaged 42 transactions per hour during peak burst periods.',
+        detectedStatus: 'Detected',
+        evidenceCount: 8
+      },
+      {
+        id: 'ind-3',
+        name: 'Fan-Out Behavior',
+        severity: 'high',
+        description: 'Splits incoming funds into 9 distinct output streams.',
+        detectedStatus: 'Detected',
+        evidenceCount: 6
+      },
+      {
+        id: 'ind-4',
+        name: 'Circular Flow',
+        severity: 'critical',
+        description: 'Funds returned to originator via intermediate hop address 0x3F9...2B1.',
+        detectedStatus: 'Detected',
+        evidenceCount: 3
+      }
+    ],
+    exposure: {
+      directIllicit: 64.2,
+      indirectIllicit: 28.5,
+      mixerExposure: 48.0,
+      sanctionedExposure: 72.4,
+      cleanVASP: 5.8
+    },
+    sanctionsMatch: {
+      isSanctioned: true,
+      lists: ['OFAC SDN List (DPRK)', 'EU Financial Watchlist'],
+      sdnId: 'SDN-ETH-98412'
+    }
+  },
+
+  '0x71C7656EC7ab88b098defB751B7401B5f6d8976F': {
+    address: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F',
+    chain: 'ETH',
+    entityName: 'Flagged Bridge Exploit Cluster',
+    category: 'High-Risk Cluster',
+    riskScore: 98,
+    riskLevel: 'critical',
+    firstSeen: '2026-03-12 14:22:01 UTC',
+    lastActive: '2026-08-20 18:45:10 UTC',
+    totalReceivedUSD: 42500000,
+    totalSentUSD: 39800000,
+    currentBalanceUSD: 2700000,
+    transactionCount: 3412,
+    connectedWalletsCount: 245,
+    balances: [
+      { symbol: 'ETH', amount: 840.5, valueUSD: 2185300 },
+      { symbol: 'USDT', amount: 450000, valueUSD: 450000 },
+      { symbol: 'DAI', amount: 64700, valueUSD: 64700 }
+    ],
+    flags: [
+      'OFAC SDN List Match (#94812)',
+      'Ronin Bridge Incident Funds Link',
+      'Direct Tornado Cash Pool Interactivity'
+    ],
+    riskIndicators: [
+      {
+        id: 'ind-5',
+        name: 'OFAC SDN Sanction Match',
+        severity: 'critical',
+        description: 'Directly linked to SDN list target #94812.',
+        detectedStatus: 'Detected',
+        evidenceCount: 19
+      },
+      {
+        id: 'ind-6',
+        name: 'Mixer Anonymization',
+        severity: 'critical',
+        description: 'Deposited over 12,000 ETH into anonymizing pools.',
+        detectedStatus: 'Detected',
+        evidenceCount: 42
+      }
+    ],
+    exposure: {
+      directIllicit: 92.5,
+      indirectIllicit: 6.8,
+      mixerExposure: 84.0,
+      sanctionedExposure: 98.0,
+      cleanVASP: 0.7
+    },
+    sanctionsMatch: {
+      isSanctioned: true,
+      lists: ['OFAC SDN (DPRK)', 'EU Financial Sanctions'],
+      sdnId: 'SDN-ETH-DPRK-94812'
+    }
+  },
+
+  '0x47ac0fb3F2D84898e4D9E7b4DaB3C24507a6D503': {
+    address: '0x47ac0fb3F2D84898e4D9E7b4DaB3C24507a6D503',
+    chain: 'ETH',
+    entityName: 'Tornado Cash 100 ETH Pool',
+    category: 'Mixer Service',
+    riskScore: 92,
+    riskLevel: 'critical',
+    firstSeen: '2020-05-10 10:00:00 UTC',
+    lastActive: '2026-08-21 12:30:12 UTC',
+    totalReceivedUSD: 850000000,
+    totalSentUSD: 842000000,
+    currentBalanceUSD: 8000000,
+    transactionCount: 184500,
+    connectedWalletsCount: 14200,
+    balances: [
+      { symbol: 'ETH', amount: 3076.9, valueUSD: 8000000 }
+    ],
+    flags: [
+      'OFAC Sanctioned Smart Contract',
+      'Anonymizing Mixer Protocol'
+    ],
+    riskIndicators: [
+      {
+        id: 'ind-7',
+        name: 'Privacy Anonymization',
+        severity: 'critical',
+        description: 'Breaks transaction graph lineage via zero-knowledge proofs.',
+        detectedStatus: 'Detected',
+        evidenceCount: 1400
+      }
+    ],
+    exposure: {
+      directIllicit: 78.0,
+      indirectIllicit: 18.0,
+      mixerExposure: 100.0,
+      sanctionedExposure: 95.0,
+      cleanVASP: 2.0
+    },
+    sanctionsMatch: {
+      isSanctioned: true,
+      lists: ['OFAC SDN List'],
+      sdnId: 'SDN-TORNADO-100'
+    }
+  },
+
+  '0x3F9A1278c771A90B23fE12938171092817362B1': {
+    address: '0x3F9A1278c771A90B23fE12938171092817362B1',
+    chain: 'ETH',
+    entityName: 'Intermediate Hop B',
+    category: 'Wallet Under Investigation',
+    riskScore: 78,
+    riskLevel: 'high',
+    firstSeen: '2026-02-18 11:04:12 UTC',
+    lastActive: '2026-08-21 09:12:00 UTC',
+    totalReceivedUSD: 184000,
+    totalSentUSD: 182500,
+    currentBalanceUSD: 1500,
+    transactionCount: 412,
+    connectedWalletsCount: 38,
+    balances: [{ symbol: 'USDT', amount: 1500, valueUSD: 1500 }],
+    flags: ['Peel Chain Intermediate Node', 'Automated Micro-splitting'],
+    riskIndicators: [
+      {
+        id: 'ind-8',
+        name: 'Peel-Chain Intermediate Hop',
+        severity: 'high',
+        description: 'Transfers 95% of incoming value to sub-wallets within minutes.',
+        detectedStatus: 'Detected',
+        evidenceCount: 12
+      }
+    ],
+    exposure: {
+      directIllicit: 55.0,
+      indirectIllicit: 35.0,
+      mixerExposure: 30.0,
+      sanctionedExposure: 45.0,
+      cleanVASP: 10.0
+    },
+    sanctionsMatch: { isSanctioned: false, lists: [] }
+  },
+
+  '0x9A48F921B7d3129841C520938C21094E19491C2': {
+    address: '0x9A48F921B7d3129841C520938C21094E19491C2',
+    chain: 'ETH',
+    entityName: 'Kraken Hot Wallet (VASP Off-Ramp)',
+    category: 'Exchanges & VASPs',
+    riskScore: 24,
+    riskLevel: 'low',
+    firstSeen: '2021-01-01 00:00:00 UTC',
+    lastActive: '2026-08-21 12:50:00 UTC',
+    totalReceivedUSD: 1420000000,
+    totalSentUSD: 1410000000,
+    currentBalanceUSD: 10000000,
+    transactionCount: 980000,
+    connectedWalletsCount: 120000,
+    balances: [{ symbol: 'ETH', amount: 3846.1, valueUSD: 10000000 }],
+    flags: ['Regulated VASP', 'KYC/AML Compliant Off-Ramp'],
+    riskIndicators: [],
+    exposure: {
+      directIllicit: 2.1,
+      indirectIllicit: 5.4,
+      mixerExposure: 3.2,
+      sanctionedExposure: 1.0,
+      cleanVASP: 94.6
+    },
+    sanctionsMatch: { isSanctioned: false, lists: [] }
+  }
+};
+
+// 50+ Mock Transactions
+export const MOCK_TRANSACTIONS: TransactionItem[] = [
+  {
+    id: 'tx-101',
+    hash: '0x9a8f3b21c4e5d67890123456789abcdef0123456789abcdef0123456789abc10',
+    chain: 'ETH',
+    fromAddress: '0x82A7656EC7ab88b098defB751B7401B5f6d8976F',
+    fromLabel: 'Wallet Under Investigation',
+    toAddress: '0x3F9A1278c771A90B23fE12938171092817362B1',
+    toLabel: 'Intermediate Hop B',
+    amountCrypto: 45.0,
+    symbol: 'ETH',
+    amountUSD: 117000,
+    timestamp: '2026-08-21 11:42:10 UTC',
+    riskScore: 88,
+    riskLevel: 'high',
+    category: 'Rapid Transfer',
+    hopCount: 1,
+    status: 'Flagged'
+  },
+  {
+    id: 'tx-102',
+    hash: '0x8b7e2a10d3c4b567890123456789abcdef0123456789abcdef0123456789abc20',
+    chain: 'ETH',
+    fromAddress: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F',
+    fromLabel: 'Bridge Incident Cluster',
+    toAddress: '0x47ac0fb3F2D84898e4D9E7b4DaB3C24507a6D503',
+    toLabel: 'Tornado Cash Pool',
+    amountCrypto: 100.0,
+    symbol: 'ETH',
+    amountUSD: 260000,
+    timestamp: '2026-08-21 10:15:22 UTC',
+    riskScore: 98,
+    riskLevel: 'critical',
+    category: 'Mixer Deposit',
+    hopCount: 2,
+    status: 'Flagged'
+  }
+];
+
+for (let i = 3; i <= 50; i++) {
+  MOCK_TRANSACTIONS.push({
+    id: `tx-10${i}`,
+    hash: `0x${i}f${i * 2}a${i * 3}b4e5d67890123456789abcdef0123456789abcdef0123456789abc${i}`,
+    chain: i % 2 === 0 ? 'ETH' : 'BTC',
+    fromAddress: `0x82A7656EC7ab88b098defB751B7401B5f6d8976F`,
+    fromLabel: 'Wallet Under Investigation',
+    toAddress: `0x3F9A1278c771A90B23fE12938171092817362B1`,
+    toLabel: `Hop Address ${i}`,
+    amountCrypto: Number((1.5 * i).toFixed(2)),
+    symbol: i % 2 === 0 ? 'ETH' : 'BTC',
+    amountUSD: Math.floor(1.5 * i * 2600),
+    timestamp: `2026-08-21 10:${(i % 60).toString().padStart(2, '0')}:00 UTC`,
+    riskScore: i % 3 === 0 ? 88 : 45,
+    riskLevel: i % 3 === 0 ? 'critical' : 'medium',
+    category: i % 3 === 0 ? 'Rapid Transfer' : 'Standard Transfer',
+    hopCount: (i % 4) + 1,
+    status: i % 3 === 0 ? 'Flagged' : 'Confirmed'
+  });
+}
+
+// 15 Alerts
+export const MOCK_ALERTS: AlertItem[] = [
+  {
+    id: 'ALT-2026-801',
+    title: 'Suspicious Activity Detected: Circular Flow',
+    severity: 'critical',
+    category: 'High-Velocity Peeling',
+    walletAddress: '0x82A7656EC7ab88b098defB751B7401B5f6d8976F',
+    entityLabel: 'Wallet Under Investigation',
+    txHash: '0x9a8f3b21c4e5d67890123456789abcdef0123456789abcdef0123456789abc10',
+    amountUSD: 117000,
+    timestamp: '2026-08-21 11:42:10 UTC',
+    status: 'new',
+    description: 'Potential Money-Laundering Pattern: Funds departed address 0x82A...91F and returned via 3 hop nodes within 12 minutes.',
+    evidence: [
+      '3 Hop Cycles in under 15 minutes',
+      '99.2% Amount Retention across transfers',
+      'High-Risk Connection with flagged address cluster',
+      'Investigation Evidence item #801'
+    ]
+  },
+  {
+    id: 'ALT-2026-802',
+    title: 'Potential Fraud Indicators Detected: Large Fan-Out Structuring',
+    severity: 'high',
+    category: 'High-Velocity Peeling',
+    walletAddress: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F',
+    entityLabel: 'Bridge Incident Cluster',
+    txHash: '0x8b7e2a10d3c4b567890123456789abcdef0123456789abcdef0123456789abc20',
+    amountUSD: 450000,
+    timestamp: '2026-08-21 10:15:22 UTC',
+    status: 'investigating',
+    description: 'Potential Money-Laundering Indicator: Single deposit split into 9 distinct output transactions sent simultaneously.',
+    evidence: [
+      '9 Simultaneous Outgoing Transfers',
+      'Zero change retained in source address',
+      'Investigation Evidence item #802'
+    ]
+  }
+];
+
+// Priority Investigations Dataset for Dashboard Centerpiece
+export const MOCK_CASES: CaseReport[] = [
+  {
+    id: 'CF-024',
+    caseNumber: 'CF-024',
+    title: 'Circular Flow & Rapid Transfer Investigation',
+    targetAddress: '0x82A7656EC7ab88b098defB751B7401B5f6d8976F',
+    entity: 'Wallet Under Investigation',
+    totalIllicitUSD: 248420,
+    leadInvestigator: 'Alex Vance (Senior Investigator)',
+    status: 'Under Review',
+    dateCreated: '2026-08-21',
+    lastUpdated: '2 min ago',
+    summary: 'Suspicious Activity Detected: Circular flow pattern + rapid movement across 4 hop addresses within 12 minutes.',
+    tags: ['Circular Flow', 'Rapid Movement', 'OFAC SDN'],
+    evidenceHashes: [
+      '0x9a8f3b21c4e5d67890123456789abcdef0123456789abcdef0123456789abc10'
+    ],
+    suspiciousIndicators: [
+      'Potential Money-Laundering Pattern: Circular flow looping back to originator',
+      'Rapid transfer velocity',
+      'Mixer exposure'
+    ],
+    recommendedSteps: [
+      'Issue Freeze Request to exchange off-ramp Kraken (0x9A48...)',
+      'Submit formal FinCEN SAR filing'
+    ]
+  },
+  {
+    id: 'CF-023',
+    caseNumber: 'CF-023',
+    title: 'Fan-Out Structuring Behavior Cluster',
+    targetAddress: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F',
+    entity: 'Bridge Incident Cluster',
+    totalIllicitUSD: 4250000,
+    leadInvestigator: 'Sarah Jenkins',
+    status: 'Under Review',
+    dateCreated: '2026-08-20',
+    lastUpdated: '8 min ago',
+    summary: 'Potential Fraud Indicators Detected: Fan-out behavior splitting lump sum deposits into 9 distinct output streams.',
+    tags: ['Fan-Out', 'Mixer Deposit'],
+    evidenceHashes: ['0x8b7e2a10d3c4b567890123456789abcdef0123456789abcdef0123456789abc20'],
+    suspiciousIndicators: ['Fan-Out multi-wallet distribution', 'Sanction list match'],
+    recommendedSteps: ['Subpoena request dispatch to VASP off-ramp']
+  },
+  {
+    id: 'CF-022',
+    caseNumber: 'CF-022',
+    title: 'Tornado Cash Anonymization Flow',
+    targetAddress: '0x47ac0fb3F2D84898e4D9E7b4DaB3C24507a6D503',
+    entity: 'Mixer Service',
+    totalIllicitUSD: 8500000,
+    leadInvestigator: 'Alex Vance',
+    status: 'Submitted FinCEN',
+    dateCreated: '2026-08-18',
+    lastUpdated: '1 hour ago',
+    summary: 'Potential Money-Laundering Pattern: 100 ETH deposited into sanctioned zero-knowledge anonymizing mixer contract.',
+    tags: ['Tornado Cash', 'OFAC SDN'],
+    evidenceHashes: ['0x7c6d1a09b2c3d4567890123456789abcdef0123456789abcdef0123456789abc30'],
+    suspiciousIndicators: ['Mixer Anonymization', 'Sanctioned contract call'],
+    recommendedSteps: ['File FinCEN SAR Form 111']
+  },
+  {
+    id: 'CF-021',
+    caseNumber: 'CF-021',
+    title: 'High-Risk Destination Off-Ramp Attempt',
+    targetAddress: '0x3F9A1278c771A90B23fE12938171092817362B1',
+    entity: 'Intermediate Hop B',
+    totalIllicitUSD: 184000,
+    leadInvestigator: 'Cyber Forensics Unit',
+    status: 'Draft',
+    dateCreated: '2026-08-15',
+    lastUpdated: '3 hours ago',
+    summary: 'High-Risk Connection: Transfers 95% of incoming value to sub-wallets attempting VASP cashout.',
+    tags: ['Peel Chain', 'VASP Off-Ramp'],
+    evidenceHashes: ['0x6b5c0a98a1b2c34567890123456789abcdef0123456789abcdef0123456789abc40'],
+    suspiciousIndicators: ['Peel-Chain Intermediate Hop', 'High velocity transfers'],
+    recommendedSteps: ['Coordinate with exchange compliance team']
+  }
+];
+
+// React Flow Graph Nodes & Edges
+export const MOCK_FLOW_NODES = [
+  {
+    id: 'node-victim',
+    type: 'customNode',
+    position: { x: 40, y: 220 },
+    data: {
+      label: 'Victim Protocol Vault',
+      address: '0x1A8bC9201f9483C2A11048194aE219481C921A11',
+      type: 'victim',
+      chain: 'ETH',
+      riskLevel: 'low',
+      riskScore: 15,
+      balanceUSD: 0,
+      balanceCrypto: '0.00 ETH (Drained)',
+      totalInflowUSD: 248420,
+      totalInflowCrypto: '100.0 ETH',
+      totalOutflowUSD: 248420,
+      totalOutflowCrypto: '100.0 ETH Drained',
+      transactionCount: 1420,
+      primaryRiskFlag: 'Exploited DeFi Protocol Vault Contract',
+      riskCategory: 'Victim Vault',
+      velocity: '100% Drain Burst',
+      tags: ['Origin Vault', 'Victim Contract'],
+      riskIndicators: ['Smart Contract Drain', 'Treasury Depleted']
+    }
+  },
+  {
+    id: 'node-target',
+    type: 'customNode',
+    position: { x: 420, y: 220 },
+    data: {
+      label: 'Wallet Under Investigation',
+      address: '0x82A7656EC7ab88b098defB751B7401B5f6d8976F',
+      type: 'target',
+      chain: 'ETH',
+      riskLevel: 'high',
+      riskScore: 87,
+      balanceUSD: 9300,
+      balanceCrypto: '3.58 ETH',
+      totalInflowUSD: 248420,
+      totalInflowCrypto: '100.0 ETH',
+      totalOutflowUSD: 239120,
+      totalOutflowCrypto: '96.4 ETH Forwarded',
+      transactionCount: 1284,
+      primaryRiskFlag: 'OFAC SDN Nexus & 82% Rapid Dispersal',
+      riskCategory: 'Primary Suspect',
+      velocity: '82% in 12m (4 Hops)',
+      tags: ['Primary Subject', 'Peel Chain', 'Lazarus Nexus'],
+      riskIndicators: ['Rapid Fan-Out (12m)', 'Tornado Interactivity', 'Circular Looping', 'OFAC SDN #98412']
+    }
+  },
+  {
+    id: 'node-hop1',
+    type: 'customNode',
+    position: { x: 820, y: 40 },
+    data: {
+      label: 'Intermediate Hop B',
+      address: '0x3F9A1278c771A90B23fE12938171092817362B1',
+      type: 'peel_chain',
+      chain: 'ETH',
+      riskLevel: 'high',
+      riskScore: 78,
+      balanceUSD: 1500,
+      balanceCrypto: '1,500 USDT',
+      totalInflowUSD: 117000,
+      totalInflowCrypto: '45.0 ETH',
+      totalOutflowUSD: 110500,
+      totalOutflowCrypto: '42.5 ETH to VASP',
+      transactionCount: 412,
+      primaryRiskFlag: 'Peel-Chain Micro-Splitting & CEX Funnel',
+      riskCategory: 'Hop Intermediary',
+      velocity: '95% in <5m',
+      tags: ['Hop Node', 'Micro-Split', 'Peel Chain'],
+      riskIndicators: ['Micro-Splitting', 'Circular Return Path', 'CEX Off-Ramp Feeder']
+    }
+  },
+  {
+    id: 'node-mixer',
+    type: 'customNode',
+    position: { x: 820, y: 400 },
+    data: {
+      label: 'Tornado Cash Pool',
+      address: '0x47ac0fb3F2D84898e4D9E7b4DaB3C24507a6D503',
+      type: 'mixer',
+      chain: 'ETH',
+      riskLevel: 'critical',
+      riskScore: 92,
+      balanceUSD: 8000000,
+      balanceCrypto: '3,076.9 ETH Pool',
+      totalInflowUSD: 131420,
+      totalInflowCrypto: '55.0 ETH Deposit',
+      totalOutflowUSD: 85000,
+      totalOutflowCrypto: 'zk-Withdrawal',
+      transactionCount: 184500,
+      primaryRiskFlag: 'OFAC SDN Sanctioned Anonymizer Contract',
+      riskCategory: 'Mixer Service',
+      velocity: 'zk-Relayer Lineage Break',
+      tags: ['Mixer', 'OFAC Sanctioned', 'Anonymizer'],
+      riskIndicators: ['OFAC SDN Listed', 'Zero-Knowledge Mixer', 'Deterministic Taint Break']
+    }
+  },
+  {
+    id: 'node-exchange',
+    type: 'customNode',
+    position: { x: 1220, y: 40 },
+    data: {
+      label: 'Kraken Hot Wallet (VASP Off-Ramp)',
+      address: '0x9A48F921B7d3129841C520938C21094E19491C2',
+      type: 'exchange',
+      chain: 'ETH',
+      riskLevel: 'low',
+      riskScore: 24,
+      balanceUSD: 10000000,
+      balanceCrypto: '3,846.1 ETH Hot Wallet',
+      totalInflowUSD: 110500,
+      totalInflowCrypto: '42.5 ETH Deposited',
+      totalOutflowUSD: 0,
+      totalOutflowCrypto: 'Custodial Fiat Settlement',
+      transactionCount: 980000,
+      primaryRiskFlag: 'Regulated VASP (Subpoena / Freeze Candidate)',
+      riskCategory: 'Regulated VASP',
+      velocity: 'Exchange Deposit Ramp',
+      tags: ['Regulated VASP', 'KYC/AML', 'Freeze Target'],
+      riskIndicators: ['Verified Exchange Hot Wallet', 'Freeze Request Target']
+    }
+  },
+  {
+    id: 'node-darknet',
+    type: 'customNode',
+    position: { x: 1220, y: 400 },
+    data: {
+      label: 'High-Risk Destination',
+      address: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
+      type: 'darknet',
+      chain: 'BTC',
+      riskLevel: 'critical',
+      riskScore: 94,
+      balanceUSD: 300000,
+      balanceCrypto: '4.41 BTC Cold Vault',
+      totalInflowUSD: 85000,
+      totalInflowCrypto: '1.25 BTC via Bridge',
+      totalOutflowUSD: 0,
+      totalOutflowCrypto: 'Cold Storage Vault',
+      transactionCount: 8940,
+      primaryRiskFlag: 'Darknet Market & Ransomware Nexus',
+      riskCategory: 'Illicit Exit Endpoint',
+      velocity: 'Cross-Chain Exit Ramp',
+      tags: ['High-Risk Endpoint', 'Darknet', 'Cross-Chain'],
+      riskIndicators: ['Darknet Attribution', 'Cross-Chain Bridge Liquidity', 'Unhosted Blacklist Vault']
+    }
+  }
+];
+
+export const MOCK_FLOW_EDGES = [
+  {
+    id: 'e-victim-target',
+    source: 'node-victim',
+    target: 'node-target',
+    type: 'smoothstep',
+    pathOptions: { borderRadius: 16 },
+    animated: true,
+    style: { stroke: '#fb923c', strokeWidth: 2 },
+    label: '$248,420 (100 ETH)',
+    labelStyle: { fill: '#38bdf8', fontWeight: 700, fontSize: 11, fontFamily: 'monospace' },
+    labelBgStyle: { fill: '#0a0f1d', fillOpacity: 0.96, rx: 999, stroke: 'rgba(59,130,246,0.5)', strokeWidth: 1 },
+    labelBgPadding: [10, 4]
+  },
+  {
+    id: 'e-target-hop1',
+    source: 'node-target',
+    target: 'node-hop1',
+    type: 'smoothstep',
+    pathOptions: { borderRadius: 16 },
+    animated: true,
+    style: { stroke: '#fb923c', strokeDasharray: '5,5', strokeWidth: 2 },
+    label: '$117,000 (45 ETH)',
+    labelStyle: { fill: '#38bdf8', fontWeight: 700, fontSize: 11, fontFamily: 'monospace' },
+    labelBgStyle: { fill: '#0a0f1d', fillOpacity: 0.96, rx: 999, stroke: 'rgba(59,130,246,0.5)', strokeWidth: 1 },
+    labelBgPadding: [10, 4]
+  },
+  {
+    id: 'e-target-mixer',
+    source: 'node-target',
+    target: 'node-mixer',
+    type: 'smoothstep',
+    pathOptions: { borderRadius: 16 },
+    animated: true,
+    style: { stroke: '#f43f5e', strokeDasharray: '5,5', strokeWidth: 2 },
+    label: '$131,420 (55 ETH)',
+    labelStyle: { fill: '#fda4af', fontWeight: 700, fontSize: 11, fontFamily: 'monospace' },
+    labelBgStyle: { fill: '#0a0f1d', fillOpacity: 0.96, rx: 999, stroke: 'rgba(244,63,94,0.5)', strokeWidth: 1 },
+    labelBgPadding: [10, 4]
+  },
+  {
+    id: 'e-hop1-exchange',
+    source: 'node-hop1',
+    target: 'node-exchange',
+    type: 'smoothstep',
+    pathOptions: { borderRadius: 16 },
+    animated: true,
+    style: { stroke: '#34d399', strokeWidth: 2 },
+    label: '$110,500 (42.5 ETH)',
+    labelStyle: { fill: '#6ee7b7', fontWeight: 700, fontSize: 11, fontFamily: 'monospace' },
+    labelBgStyle: { fill: '#0a0f1d', fillOpacity: 0.96, rx: 999, stroke: 'rgba(52,211,153,0.5)', strokeWidth: 1 },
+    labelBgPadding: [10, 4]
+  },
+  {
+    id: 'e-mixer-darknet',
+    source: 'node-mixer',
+    target: 'node-darknet',
+    type: 'smoothstep',
+    pathOptions: { borderRadius: 16 },
+    animated: true,
+    style: { stroke: '#f43f5e', strokeWidth: 2 },
+    label: '$85,000 (1.25 BTC)',
+    labelStyle: { fill: '#fda4af', fontWeight: 700, fontSize: 11, fontFamily: 'monospace' },
+    labelBgStyle: { fill: '#0a0f1d', fillOpacity: 0.96, rx: 999, stroke: 'rgba(244,63,94,0.5)', strokeWidth: 1 },
+    labelBgPadding: [10, 4]
+  }
+];
+
+export const MOCK_AI_CONVERSATION: AIMessage[] = [
+  {
+    id: 'msg-1',
+    sender: 'user',
+    text: 'Why was target wallet 0x82A7656EC7ab88b098defB751B7401B5f6d8976F flagged as high risk?',
+    timestamp: '11:45 AM'
+  },
+  {
+    id: 'msg-2',
+    sender: 'assistant',
+    text: 'Target wallet 0x82A7...91F received a Risk Score of 87/100 (High Risk / Requires Investigation) due to multiple specific risk indicators:\n\n1. Rapid Transfer Velocity: Transferred 82% of received value across 4 hop addresses within 12 minutes of arrival.\n2. Mixer Interactivity: Executed direct transfers with Tornado Cash 100 ETH pool.\n3. Circular Looping: Detected 3 hop cycles returning to intermediate wallet 0x3F9A...2B1.\n4. Watchlist Co-Location: Sub-cluster link to OFAC SDN entry #SDN-ETH-98412.',
+    timestamp: '11:45 AM',
+    evidenceItems: [
+      { type: 'wallet', label: 'Wallet Under Investigation', value: '0x82A7656EC7ab88b098defB751B7401B5f6d8976F', riskLevel: 'high' },
+      { type: 'mixer', label: 'Tornado Cash Pool', value: '0x47ac0fb3F2D84898e4D9E7b4DaB3C24507a6D503', riskLevel: 'critical' }
+    ]
+  }
+];

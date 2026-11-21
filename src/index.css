@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-navy: #070A13;
+  --card-dark: #0D1322;
+  --card-secondary: #11182B;
+  --border-subtle: #162038;
+
+  --accent-blue: #3B82F6;
+  --accent-purple: #8B5CF6;
+
+  --risk-low: #10B981;
+  /* Green */
+  --risk-medium: #F59E0B;
+  /* Yellow */
+  --risk-high: #F97316;
+  /* Orange */
+  --risk-critical: #EF4444;
+  /* Red */
+}
+
+@layer base {
+  body {
+    background-color: var(--bg-navy);
+    color: #E2E8F0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Solid dark surfaces for cards with subtle 1px border */
+.card-solid {
+  background-color: var(--card-dark);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.5rem;
+}
+
+.card-solid-secondary {
+  background-color: var(--card-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0.5rem;
+}
+
+/* Projexion Design System Classes */
+.projexion-canvas {
+  background-color: #080A11;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(109, 85, 255, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 100% 100%, rgba(0, 210, 211, 0.04) 0%, transparent 50%);
+}
+
+.projexion-card {
+  background-color: rgba(13, 17, 28, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.7), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.projexion-card:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 16px 42px -4px rgba(0, 0, 0, 0.8), inset 0 1px 0 0 rgba(255, 255, 255, 0.14);
+}
+
+.projexion-card-highlight {
+  border-color: rgba(109, 85, 255, 0.4);
+  box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.7), 0 0 24px -4px rgba(109, 85, 255, 0.25), inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+}
+
+.projexion-pill-active {
+  background: linear-gradient(135deg, #6D55FF 0%, #4F38EB 100%);
+  color: #FFFFFF;
+  box-shadow: 0 0 20px rgba(109, 85, 255, 0.5);
+}
+
+.projexion-pill-inactive {
+  background: transparent;
+  color: #94A3B8;
+  transition: all 0.2s ease;
+}
+
+.projexion-pill-inactive:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #FFFFFF;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-navy);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1E2B4A;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2A3B63;
+}

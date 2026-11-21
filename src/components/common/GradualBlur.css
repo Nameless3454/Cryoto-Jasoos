@@ -1,0 +1,28 @@
+.gradual-blur {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  opacity: var(--gradual-blur-reveal, 1);
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity;
+}
+
+.gradual-blur > div {
+  pointer-events: none;
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .gradual-blur[data-position="bottom"] {
+    background: linear-gradient(to top, rgba(7, 11, 20, 0.9), transparent);
+  }
+  .gradual-blur[data-position="top"] {
+    background: linear-gradient(to bottom, rgba(7, 11, 20, 0.9), transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradual-blur,
+  .gradual-blur div {
+    transition: none !important;
+  }
+}

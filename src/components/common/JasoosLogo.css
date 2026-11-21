@@ -1,0 +1,225 @@
+/* ==========================================================================
+   JASOOS CRYPTO FORENSICS - MINIMALIST & PROFESSIONAL ANIMATED LOGO
+   ========================================================================== */
+
+.jasoos-logo-root {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease-out;
+}
+
+.jasoos-logo-root:hover {
+  transform: scale(1.02);
+  filter: brightness(1.08);
+}
+
+/* Subtle, Diffuse Ambient Glow (No harsh circular disc) */
+.jasoos-ambient-glow {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.18) 0%, rgba(139, 92, 246, 0.12) 50%, transparent 75%);
+  filter: blur(24px);
+  animation: jasoosAmbientBreathe 5s ease-in-out infinite;
+  transition: opacity 0.4s ease-out;
+  will-change: transform, opacity;
+}
+
+.jasoos-logo-root:hover .jasoos-ambient-glow {
+  opacity: 0.9;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.26) 0%, rgba(139, 92, 246, 0.18) 50%, transparent 75%);
+}
+
+@keyframes jasoosAmbientBreathe {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.05);
+  }
+}
+
+/* Hexagonal Shield Pulse (Smooth, subtle glow) */
+.jasoos-hex-shield {
+  transform-origin: 100px 72px;
+  animation: jasoosShieldPulse 4.5s ease-in-out infinite;
+  will-change: filter, transform;
+}
+
+@keyframes jasoosShieldPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.35)) drop-shadow(0 0 14px rgba(99, 102, 241, 0.15));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.55)) drop-shadow(0 0 22px rgba(56, 189, 248, 0.35));
+    transform: scale(1.01);
+  }
+}
+
+/* Eye Symbol & Scanning Light */
+.jasoos-eye-contour {
+  filter: drop-shadow(0 0 4px rgba(56, 189, 248, 0.45));
+}
+
+.jasoos-eye-scanner-beam {
+  animation: jasoosScanBeam 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.jasoos-eye-scanner-light {
+  animation: jasoosScanLight 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes jasoosScanBeam {
+  0% {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateX(30px);
+    opacity: 0.8;
+  }
+  65% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+}
+
+@keyframes jasoosScanLight {
+  0% {
+    transform: translateX(-28px);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 6px #00f0ff);
+  }
+  50% {
+    transform: translateX(28px);
+    opacity: 0.95;
+    filter: drop-shadow(0 0 6px #00f0ff);
+  }
+  62% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(28px);
+    opacity: 0;
+  }
+}
+
+/* Scanning Brackets - Sequential Entrance */
+.jasoos-bracket {
+  transform-origin: 100px 72px;
+  animation: jasoosBracketReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.jasoos-bracket-tl {
+  animation-delay: 0.08s;
+}
+
+.jasoos-bracket-tr {
+  animation-delay: 0.18s;
+}
+
+.jasoos-bracket-br {
+  animation-delay: 0.28s;
+}
+
+.jasoos-bracket-bl {
+  animation-delay: 0.38s;
+}
+
+@keyframes jasoosBracketReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+}
+
+.jasoos-brackets-group {
+  animation: jasoosBracketsIdle 4s ease-in-out infinite 0.6s;
+}
+
+@keyframes jasoosBracketsIdle {
+  0%, 100% {
+    opacity: 0.75;
+    filter: drop-shadow(0 0 3px rgba(0, 240, 255, 0.3));
+  }
+  50% {
+    opacity: 0.95;
+    filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.65));
+  }
+}
+
+/* JASOOS Wordmark Entrance */
+.jasoos-wordmark {
+  animation: jasoosWordmarkReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+  will-change: transform, opacity;
+}
+
+@keyframes jasoosWordmarkReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Subtitle Reveal */
+.jasoos-subtitle {
+  animation: jasoosSubtitleReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+  will-change: opacity, letter-spacing;
+}
+
+@keyframes jasoosSubtitleReveal {
+  0% {
+    opacity: 0;
+    letter-spacing: 0.2em;
+  }
+  100% {
+    opacity: 0.9;
+    letter-spacing: 0.3em;
+  }
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .jasoos-logo-root,
+  .jasoos-logo-root:hover,
+  .jasoos-ambient-glow,
+  .jasoos-hex-shield,
+  .jasoos-eye-scanner-beam,
+  .jasoos-eye-scanner-light,
+  .jasoos-bracket,
+  .jasoos-brackets-group,
+  .jasoos-wordmark,
+  .jasoos-subtitle {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
